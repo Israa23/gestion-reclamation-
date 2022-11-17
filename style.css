@@ -1,0 +1,28 @@
+#lastName,#firstname,#id_car ,#OperationType ,#id_rdv ,#Desiredcarservicedate ,#Ownedcar ,#email
+{ 
+	font-size: large;
+	font-family: Arial;
+	
+	
+	
+	font-style: bold;
+}
+
+
+table{
+	border-collapse: collapse;
+	margin:auto;
+
+	
+	}
+
+th {
+	font-weight:  bold ;
+	border : 2px solid rgb(9, 9, 9);
+}
+td  {
+ 
+ font-style: 'Arial';
+	border : 2px solid rgb(17, 16, 16);
+
+}
