@@ -3,11 +3,14 @@ include "recC.php";
 
 $rc = new recC();
 $tab = $rc->listerec();
-if(isset($_GET['messager']))
+if(isset($_POST['recherche']))
                             {
-                                $message=$_GET["messager"];
-                                $listerec=$recC->recherche($message);
+                                $rech=$_POST["recherche"];
+                                $tab=$rc->recherche($rech);
+                            }else{
+                                $tab=$rc->listerec();
                             }
+                            
 ?>
 
 <!DOCTYPE html>
@@ -139,7 +142,26 @@ if(isset($_GET['messager']))
                       Add
                     </button>
                 </a>
+                <div class="form-group">
+                <a href="contact.html">
+                    <button type="add" name="actualiser" value="Add" class="btn btn-primary">
+                      Contact Us 
+                    </button>
+                </a>
             </div>
+            <div>
+            <th colspan="2">
+    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="POST" action="listerec.php">
+                                        <div class="input-group">
+<input type="text" class="form-control bg-light border-0 small" placeholder="Rechercher un rec"aria-label="Search" aria-describedby="basic-addon2" name="rech">
+                                                                <div class="input-group-append">
+                                                        <button class="btn btn-primary" type="submit" value="recherche">
+                                                                        <i class="fas fa-search fa-sm"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                        </div>
             <table id="tab" class="table table-striped" >  
                 <thead>
                     <th><FONT COLOR="BLACK">ID</FONT></th>
@@ -153,20 +175,8 @@ if(isset($_GET['messager']))
                     <th><FONT COLOR="BLACK">Update</FONT></th>
                     <th><FONT COLOR="BLACK">Delete</FONT></th>
                     <th><FONT COLOR="BLACK">ID rdv</FONT></th>
-                    <th colspan="2">
-                                                        <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search" method="get" action="listerec.php">
-                                                            <div class="input-group">
-                                                                <input type="text" class="form-control bg-light border-0 small" placeholder="Rechercher une reclamation"
-                                                                    aria-label="Search" aria-describedby="basic-addon2" name="recherche">
-                                                                <div class="input-group-append">
-                                                                    <button class="btn btn-primary" type="submit" value="Chercher">
-                                                                        <i class="fas fa-search fa-sm"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                        </form>
-                                                    </th>
-                                                    <th>
+                    
+                                                    
                 </thead>
                 <tbody>
                     <?PHP

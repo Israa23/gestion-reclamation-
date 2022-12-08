@@ -1,12 +1,10 @@
-                
-    <?php
+<?php
+include "recC.php";
 include "rdvC.php";
-
-$r = new rdvC();
-$tab = $r->listerdv();
+$rc = new recC();
+$tab = $rc->listerec();
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,7 +13,6 @@ $tab = $r->listerdv();
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Star Admin</title>
-  <script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="node_modules/font-awesome/css/font-awesome.min.css" />
   <link rel="stylesheet" href="node_modules/perfect-scrollbar/dist/css/perfect-scrollbar.min.css" />
   <link rel="stylesheet" href="css/style.css" />
@@ -122,66 +119,72 @@ $tab = $r->listerdv();
         <!-- partial -->
        
         <div class="content-wrapper">
-        
+          <h3 class="page-heading mb-4">Tables</h3>
 
           <div class="row mb-2">
             <div class="col-lg-12">
               <div class="card">
-              <button class="btn btn-primary" onclick="ExportToExcel('xlsx')">Export table to excel</button>
                 <div class="card-body">
-                <h3 class="mb-4 text-center"><FONT COLOR="BLACK"><strong>RENDEZ-VOUS LIST</strong></FONT></h3>
+                  <h5 class="card-title mb-4">Reclamation Table </h5>
                   <div class="table-responsive">
-                  
-
-
-<table class="table table-striped" id="tbl_exporttable_to_xls">
-    <thead> <th><FONT COLOR="BLACK">id_rdv</FONT></th>
-        <th><FONT COLOR="BLACK">First Name</FONT></th>
-        <th><FONT COLOR="BLACK">Last Name</FONT></th>
-        <th><FONT COLOR="BLACK">Email</FONT></th>
-        <th><FONT COLOR="BLACK">Desired car service date </FONT></th>
-        <th><FONT COLOR="BLACK">Operation Type </FONT></th>
-        <th><FONT COLOR="BLACK">Owned car</FONT> </th>
-        <th><FONT COLOR="BLACK">id_car</FONT></th>
+                    <table class="table center-aligned-table">
+                      <thead>
+                          <tr class="text-primary">
+                             <th>ID</th>
+                             <th>First Name</th>
+                             <th>Last Name</th>
+                             <th>Email</th>
+                             <th>Car type </th>
+                             <th>Message</th>
+                             <th>ID to rec </th>
+                             <th>rdv </th>
        
-        <th><FONT COLOR="BLACK">Update</FONT></th>
-        <th><FONT COLOR="BLACK">Delete</FONT></th>
-    </thead>
-    <?php
-    foreach ($tab as $rdv) {
-    ?>
-        <tr>
-             <td class="align-img"><?= $rdv['id_rdv']; ?></td>
-            <td class="align-img"><?= $rdv['firstName']; ?></td>
-            <td class="align-img"><?= $rdv['lastName']; ?></td>
-            <td class="align-img"><?= $rdv['email']; ?></td>
-            <td class="align-img"><?= $rdv['Desiredcarservicedate']; ?></td>
-            <td class="align-img"><?= $rdv['OperationType']; ?></td>
-            <td class="align-img"><?= $rdv['Ownedcar']; ?></td>
-            <td class="align-img"><?= $rdv['id_car']; ?></td>
-          
-            <td align="center">
-            <div class="form-group">
-                <form method="POST" action="updaterdv.php">
-                    <input type="submit" name="update" class="btn btn-primary" value="Update">
-                    <input type="hidden" value=<?PHP echo $rdv['id_rdv']; ?> name="id_rdv">
-                </form>
-    </div>
-            </td>
-            <td>
-            <div class="form-group">
-                <a href="deleterdv.php?id=<?php echo $rdv['id_rdv']; ?>">
-                <input type="submit" value="Delete" class="btn btn-primary"></a>
-    </div>
-            </td>
-        </tr>
-    <?php
-    }
-    ?>
-</table>
-
- <!-- partial:../../partials/_footer.html -->
- <footer class="footer">
+                             <th>Update</th>
+                              <th>Delete</th>
+                            </tr>
+                       </thead>
+                       <tbody>
+                        <?php 
+                        foreach($tab as $rec){
+                        ?>
+                          <tr>
+                            <td><?php $rec['idd']; ?></td>
+                           <td><?= $rec['firstname']; ?></td>
+                           <td><?= $rec['lastname']; ?></td>
+                           <td><?= $rec['email']; ?></td>
+                           <td><?= $rec['typecar']; ?></td>
+                           <td><?= $rec['messager']; ?></td>
+                           
+                           <td><?= $rec['idrec']; ?></td>
+                           <td><?= $rec['rdv']; ?></td>
+                         
+                           <td align="center">
+                           <div class="form-group">
+                                <a href="contact.html?idd=<?PHP echo $rec['idd']; ?>">
+                                    <input type="submit" value="Contact " class="btn btn-primary">
+                                </a>
+                            </div>
+                           </td>
+                           <td>
+                               
+                               <a href="deleterec.php?idd=<?php echo $rec['idd']; ?>">
+                               <input type="submit" value="Delete" class="btn btn-primary"></a>
+                              </a>
+                           </td>
+                       </tr>
+                   
+                  <?php } ?>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+                        </div>
+        <!-- partial:../../partials/_footer.html -->
+        <footer class="footer">
           <div class="container-fluid clearfix">
             <span class="float-right">
                 <a href="addrdv.php">Star Admin</a> &copy; 2017
@@ -202,17 +205,6 @@ $tab = $r->listerdv();
   <script src="../../js/off-canvas.js"></script>
   <script src="../../js/hoverable-collapse.js"></script>
   <script src="../../js/misc.js"></script>
-  <script>
-
-function ExportToExcel(type, fn, dl) {
-    var elt = document.getElementById('tbl_exporttable_to_xls');
-    var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-    return dl ?
-        XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-        XLSX.writeFile(wb, fn || ('RDV List.' + (type || 'xlsx')));
-}
-
-</script>
 </body>
 
 </html>

@@ -1,8 +1,8 @@
 <?php 
      include 'rec.php';
      include 'recC.php';
-include 'rdv.php';
-include 'rdvC.php' ;
+     include 'rdv.php';
+     include 'rdvC.php' ;
     $error = "";
 
     // create course
@@ -49,6 +49,45 @@ include 'rdvC.php' ;
       }
     
       $liste=$rdvC->listerdv();
+     
+      if(isset($_POST['submit']))
+{
+
+function CheckCaptcha($userResponse) {
+        $fields_string = '';
+        $fields = array(
+            'secret' => '6LcxaUojAAAAAIs5MZfFq7kP2KAh4IRIwJThVmCG',
+            'response' => $userResponse
+        );
+        foreach($fields as $key=>$value)
+        $fields_string .= $key . '=' . $value . '&';
+        $fields_string = rtrim($fields_string, '&');
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://www.google.com/recaptcha/api/siteverify');
+        curl_setopt($ch, CURLOPT_POST, count($fields));
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, True);
+
+        $res = curl_exec($ch);
+        curl_close($ch);
+
+        return json_decode($res, true);
+    }
+
+
+    // Call the function CheckCaptcha
+    $result = CheckCaptcha($_POST['g-recaptcha-response']);
+
+    if ($result['success']) {
+        //If the user has checked the Captcha box
+        echo "Captcha verified Successfully";
+	
+    } else {
+        // If the CAPTCHA box wasn't checked
+       echo "Error Message";
+    }
+}
     
 ?>
 <!DOCTYPE html>
@@ -60,11 +99,14 @@ include 'rdvC.php' ;
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
 
     <!-- Google Web Fonts -->
+    
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Rubik&display=swap" rel="stylesheet"> 
 
@@ -131,7 +173,7 @@ include 'rdvC.php' ;
                     <div class="navbar-nav ml-auto py-0">
                         <a href="index.html" class="nav-item nav-link">Home</a>
                         <a href="about.html" class="nav-item nav-link">Login</a>
-                        <a href="service.html" class="nav-item nav-link active">AS Service</a>
+                        <a href="service.html" class="nav-item nav-link active">A-S Service</a>
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Cars</a>
                             <div class="dropdown-menu rounded-0 m-0">
@@ -215,7 +257,7 @@ include 'rdvC.php' ;
             <textarea placeholder="Enter here..." name="messager"></textarea>
           </div>
         </div>
-        <div class="groupe">
+        <div align="center" class="groupe">
               <label>ID to claim :</label>
               <input type="text" placeholder="ID to claim" name="idrec">
               <i class="fas fa-user"></i>
@@ -228,13 +270,13 @@ include 'rdvC.php' ;
               </select>
         
       </div>
+      <div class="g-recaptcha" data-sitekey="6LcxaUojAAAAAJO8qJfTADNG5NRynocBBd4YmrP8"></div>
       <div align="center">
-      <input type="submit" align="center"  class="btn btn-primary "value="Send Reclamation"> 
+      <input type="submit" align="center"  class="btn btn-primary "value="submit"> 
       </div>
 
     </form>
-    </body>
-</html>
+   
 
 
 <!-- Vendor Start -->
